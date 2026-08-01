@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View EV Stations</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <h3>EV Charging Stations</h3>
+    <div>
+        <table class="table mt-5">
+            <tr>
+                <th>Sl.No:</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th></th>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><img src="{{i.photo}}" style="width: 100px; height: 100px;"></td>
+                <td>{{i.name}}</td>
+                <td>{{i.phone}}</td>
+                <td>{{i.email}}</td>
+                <td>{{i.latitude}}</td>
+                <td>{{i.longitude}}</td>
+                <td><a href="/edit_ev_station/{{i.id}}" class="btn btn-primary">EDIT</a>
+                <a href="/delete_ev_station/{{i.id}}" class="btn btn-primary">DELETE</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+</body>
+</html>
