@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'EV_Stations',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': os.getenv("DB_PASSWORD"),
         
     }
 }
