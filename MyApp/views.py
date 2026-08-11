@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User,Group
-from MyApp.models import EV_station, users
+from MyApp.models import EV_station, Slot, users
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 def add_EV(request):
@@ -156,3 +156,29 @@ def user_home(request):
 def worker_home(request):
     return render(request,'worker_home.html')
 
+def manage_slots(request,id):
+    station=EV_station.objects.get(id=id)
+    slots = Slot.objects.filter(station=station)
+    return render(request, 'manage_slots.html',{'data':station, 'slots':slots})
+
+def add_slots(request,id):
+
+    station=EV_station.objects.get(id=id)
+
+    if request.method=='POST':
+        charger_type=request.POST['charger_type']
+        kw=request.POST['kw']
+        slot_number=request.POST['slot_number']
+        price=request.POST['price']
+
+        slot=Slot()
+        slot.station=station
+        slot.charger_type=charger_type
+        slot.kw=kw
+        slot.slot_number=slot_number
+        slot.price=price
+        slot.save()
+
+        return redirect(f'/manage_slots/{id}')
+
+    return render(request, 'add_slots.html',{'data':station})

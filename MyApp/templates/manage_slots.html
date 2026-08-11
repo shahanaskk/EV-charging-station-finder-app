@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Slots</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>EV Charging Stations</h2>
+        <a href="/admin_home"> Dashboard</a>
+        <a href="/admin_home"> EV Stations</a>
+        <a href="/admin_home"> Users</a>
+        <a href="/admin_home"> Workers</a>
+        
+    </div>    
+
+    
+    <nav class="navbar">
+        <div>
+        EV Charging Stations Admin Panel
+        </div>
+        <select>
+        <option>Admin</option>
+        <option>Change Password</option>
+        <option>Log out</option>
+    </select>
+    </nav>
+
+    <div class="content">
+    <h1>Manage Slots</h1>
+    <div class="breadcrumb">
+    <a href="">Dashboard</a> >
+    <a href="">EV Stations</a> >
+    <span>Manage Slots</span>
+    </div>
+
+    <div class="station">
+        <img src="{{data.photo}}" style="width: 80px; height: 70px;">
+
+        <div>
+        <span>{{data.name}}</span>
+        
+        <div>
+        <span>{{data.phone}}</span>
+        <span>{{data.email}}</span>
+        </div>
+
+        </div>
+    </div>
+
+    <div class="slot">
+            <h2>Slots List</h2>
+            <div>
+            <a href="/add_slots/{{data.id}}" class="btn btn-success">Add New Slots</a>
+            </div>           
+    </div>
+    
+    <div class="list">
+        <table class="table mt-4">
+                <tr>
+                    <th>#</th>
+                    <th>Slot Number</th>
+                    <th>Charger Type</th>
+                    <th>Power (kW)</th>
+                    <th>Price (Rs./hr)</th>
+                    <th>Actions</th>
+                </tr>
+                {% for i in slots %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.slot_number}}</td>
+                    <td>{{i.charger_type}}</td>
+                    <td>{{i.kw}}</td>
+                    <td>{{i.price}}</td>
+                    <td>
+                        <a href="">Edit</a>
+                        <a href="">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+        </table>    
+    </div>
+
+    
+
+    
+      
+
+    
+</body>
+</html>
