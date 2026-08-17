@@ -10,6 +10,16 @@
 </head>
 <body>
     <div>
+        <h3>Add EV Stations</h3><br><br>
+
+        {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+        
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div>

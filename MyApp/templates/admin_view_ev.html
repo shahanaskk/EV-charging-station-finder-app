@@ -12,6 +12,14 @@
 <body>
     <h3>EV Charging Stations</h3>
     <div>
+        
+     {% if messages %}
+     {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+     {% endfor %}
+     {% endif %}
         <table class="table mt-5">
             <tr>
                 <th>Sl.No:</th>
@@ -34,7 +42,7 @@
                 <td>{{i.longitude}}</td>
                 <td><a href="/edit_ev_station/{{i.id}}" class="btn btn-primary">EDIT</a>
                 <a href="/delete_ev_station/{{i.id}}" class="btn btn-danger">DELETE</a>
-                <a href="/manage_slots/{{i.id}}" class="btn btn-success">Manage Slots</a> 
+                
             </td>
             </tr>
             {% endfor %}

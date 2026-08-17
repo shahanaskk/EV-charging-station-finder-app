@@ -1,10 +1,12 @@
 from datetime import datetime
 
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User,Group
 from MyApp.models import EV_station, Slot, users
 from django.contrib.auth import authenticate,login,logout
+from django.utils.crypto import get_random_string
 # Create your views here.
 def add_EV(request):
     if request.method == "POST":
@@ -21,7 +23,22 @@ def add_EV(request):
         fs.save(date,photo)
         path=fs.url(date)
 
+        if User.objects.filter(username=email).exists():
+            messages.error(request,"An EV station with this Email already exists")
+            return redirect('/add_EV/')
+
+        password = phone
+
+        user = User.objects.create_user(
+        username=email,
+        email=email,
+        password=password
+        )
+
+        user.groups.add(Group.objects.get(name='EV_charging_station'))
+
         obj=EV_station()
+        obj.user=user
         obj.name=name
         obj.phone=phone
         obj.email=email
@@ -30,7 +47,11 @@ def add_EV(request):
         obj.photo=path
         obj.save()
 
-        return redirect('/add_EV/')
+        messages.success(
+        request,
+        f"EV Station added successfully! Username: {email} | Temporary Password: {password}")
+
+        return redirect('/admin_view_ev/')
     
     return render (request,'add_EVstation.html') 
 
@@ -60,6 +81,7 @@ def edit_ev_station(request,id):
             path=fs.url(date)
             station.photo=path
             station.save()
+
         station.name=name
         station.phone=phone
         station.email=email
@@ -100,6 +122,10 @@ def log_inPost(request):
         if user.groups.filter(name='worker').exists():
             
             return redirect('/worker_home/')
+
+        if user.groups.filter(name='EV_charging_station').exists():
+                    
+                    return redirect('/ev_station_home/')
 
         else:
              return redirect('/log_in/')
@@ -156,14 +182,14 @@ def user_home(request):
 def worker_home(request):
     return render(request,'worker_home.html')
 
-def manage_slots(request,id):
-    station=EV_station.objects.get(id=id)
+def manage_slots(request):
+    station=EV_station.objects.get(user=request.user)
     slots = Slot.objects.filter(station=station)
     return render(request, 'manage_slots.html',{'data':station, 'slots':slots})
 
-def add_slots(request,id):
+def add_slots(request):
 
-    station=EV_station.objects.get(id=id)
+    station=EV_station.objects.get(user=request.user)    
 
     if request.method=='POST':
         charger_type=request.POST['charger_type']
@@ -179,6 +205,37 @@ def add_slots(request,id):
         slot.price=price
         slot.save()
 
-        return redirect(f'/manage_slots/{id}')
+        return redirect('/manage_slots/')
 
-    return render(request, 'add_slots.html',{'data':station})
+    return render(request, 'add_slots.html')
+
+def ev_station_home(request):
+    return render(request,'ev_station_home.html')
+
+def edit_slots(request,id):
+
+    station=EV_station.objects.get(user=request.user)    
+    
+    slot=Slot.objects.get(id=id, station=station)
+
+    if request.method== 'POST':
+    
+        charger_type=request.POST['charger_type']
+        kw=request.POST['kw']
+        slot_number=request.POST['slot_number']
+        price=request.POST['price']
+
+        slot.charger_type=charger_type
+        slot.kw=kw
+        slot.slot_number=slot_number
+        slot.price=price
+        slot.save()
+
+        return redirect('/manage_slots/')
+
+    return render(request, 'edit_slot.html', {'data':slot})
+
+def delete_slot(request,id):
+    station=EV_station.objects.get(user=request.user)
+    Slot.objects.get(id=id, station=station).delete()
+    return redirect('/manage_slots/')

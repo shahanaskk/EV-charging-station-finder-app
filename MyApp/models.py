@@ -22,6 +22,7 @@ class worker(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
 
 class EV_station(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     name=models.CharField(max_length=100)
     photo= models.ImageField(upload_to='stations/')
     phone=models.CharField(max_length=50)

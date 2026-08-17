@@ -15,35 +15,31 @@
 
 <body>
     <div class="sidebar">
-        <h2>EV Charging Stations</h2>
+        <h2>{{data.name}}</h2>
         <a href="/admin_home"> Dashboard</a>
-        <a href="/admin_home"> EV Stations</a>
-        <a href="/admin_home"> Users</a>
-        <a href="/admin_home"> Workers</a>
+        <a href="/admin_home"> Manage Slots</a>
+        <a href="/admin_home"> Bookings</a>
+        <a href="/admin_home"> Profile</a>
         
     </div>    
 
     
     <nav class="navbar">
         <div>
-        EV Charging Stations Admin Panel
+        
         </div>
         <select>
-        <option>Admin</option>
+        <option>{{data.name}}</option>
         <option>Change Password</option>
         <option>Log out</option>
     </select>
     </nav>
 
     <div class="content">
-    <h1>Manage Slots</h1>
-    <div class="breadcrumb">
-    <a href="">Dashboard</a> >
-    <a href="">EV Stations</a> >
-    <span>Manage Slots</span>
-    </div>
+    <h2>Manage Slots</h2>
+   
 
-    <div class="station">
+    <!-- <div class="station">
         <img src="{{data.photo}}" style="width: 80px; height: 70px;">
 
         <div>
@@ -55,23 +51,23 @@
         </div>
 
         </div>
-    </div>
+    </div> -->
 
     <div class="slot">
-            <h2>Slots List</h2>
+            <h5>Add, view and manage your charging slots</h5>
             <div>
-            <a href="/add_slots/{{data.id}}" class="btn btn-success">Add New Slots</a>
+            <a href="/add_slots/" class="btn btn-success">Add New Slots</a>
             </div>           
     </div>
     
-    <div class="list">
+    <div class="table-responsive">
         <table class="table mt-4">
                 <tr>
                     <th>#</th>
                     <th>Slot Number</th>
                     <th>Charger Type</th>
                     <th>Power (kW)</th>
-                    <th>Price (Rs./hr)</th>
+                    <th>Price (Rs./kWh)</th>
                     <th>Actions</th>
                 </tr>
                 {% for i in slots %}
@@ -82,8 +78,8 @@
                     <td>{{i.kw}}</td>
                     <td>{{i.price}}</td>
                     <td>
-                        <a href="">Edit</a>
-                        <a href="">Delete</a>
+                        <a href="/edit_slots/{{i.id}}">Edit</a>
+                        <a href="/delete_slot/{{i.id}}">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}

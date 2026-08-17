@@ -31,6 +31,9 @@ urlpatterns = [
     path('sign_upPost/',views.sign_upPost),
     path('user_home/',views.user_home),
     path('worker_home/',views.worker_home),
-    path('manage_slots/<id>',views.manage_slots),
-    path('add_slots/<id>',views.add_slots)
+    path('manage_slots/',views.manage_slots),
+    path('add_slots/',views.add_slots),
+    path('ev_station_home/',views.ev_station_home),
+    path('edit_slots/<id>',views.edit_slots),
+    path('delete_slot/<id>',views.delete_slot)
 ]
