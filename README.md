@@ -1,6 +1,6 @@
 # ⚡ EV Charging Station Finder App
 
-A web application built using **Python, Django, and MySQL** that helps electric vehicle (EV) users locate charging stations and book charging slots online. The system includes separate dashboards for administrators, users, and workers, making station and booking management simple and efficient.
+A web application built using **Python, Django, and MySQL** that helps electric vehicle (EV) users find charging stations and manage charging slots. The application includes role-based access for administrators, EV charging stations, customers, and workers.
 
 ---
 
@@ -13,15 +13,27 @@ A web application built using **Python, Django, and MySQL** that helps electric 
 - View all charging stations
 - Edit station details
 - Delete charging stations
+- Manage EV charging station information
+
+### ⚡ EV Charging Station
+
+- EV station registration
+- Automatic user account creation for EV stations
+- EV station login
+- Role-based access using Django Groups
+- Dedicated EV station dashboard
 - Manage charging slots
+- Add charging slots
+- View charging slots
+- Edit charging slots
+- Delete charging slots
+- Charging slots linked to their respective EV stations
 
-### 👤 User
+### 👤 Customer
 
-- User registration and login
-- Browse available EV charging stations
-- View station details
-- Book available charging slots
-- View booking status
+- Customer registration
+- Customer login
+- Dedicated customer dashboard
 
 ### 👷 Worker
 
@@ -91,15 +103,20 @@ pip install -r requirements.txt
 
 ### 4. Create a `.env` file
 
-Add your Django secret key:
+Add your Django secret key and database credentials:
 
 ```env
 DJANGO_SECRET_KEY=your_secret_key
+DB_NAME=your_database_name
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_HOST=localhost
+DB_PORT=3306
 ```
 
 ### 5. Configure the MySQL database
 
-Update the database settings in `settings.py` with your local MySQL credentials.
+Create a MySQL database and make sure the database settings in `settings.py` read the required credentials from the `.env` file.
 
 ### 6. Apply migrations
 
@@ -117,7 +134,7 @@ python manage.py runserver
 
 ## 📸 Screenshots
 
-Screenshots will be added soon.
+Screenshots will be added after the main application features and UI are completed.
 
 ---
 
@@ -125,45 +142,59 @@ Screenshots will be added soon.
 
 **In Progress**
 
-### Completed
+### ✅ Completed
 
-- User Authentication(Log in & Registration)
-- Role-based Dashboards (Admin, User & Worker)
-- Admin Dashboard
-- EV Charging Station Management (CRUD)
-- Image Upload Support
-- User Dashboard
-- Worker Dashboard
-- MySQL Database integration
-- Secure Configuration using Environment Variables (.env)
+- User authentication and registration
+- EV station authentication
+- Role-based access using Django Groups
+- Admin dashboard
+- EV station dashboard
+- Customer dashboard
+- Worker dashboard
+- EV charging station CRUD operations
+- EV station slot management
+  - Add slots
+  - View slots
+  - Edit slots
+  - Delete slots
+
+- Station-specific slot ownership
+- Image upload support
+- MySQL database integration
+- Environment variable configuration using `.env`
 - Git & GitHub version control
+- Responsive template structure
 
-### Planned Improvements
+### 🔄 Upcoming
 
-- Charging Slot Management
-- Booking System
-- Location (Latitude & Longitude) Management
+- Customer search for EV charging stations
+- Station details and available-slot display for customers
+- Charging slot booking system
+- Booking history
+- Google Maps-based station search
 - Improved UI/UX
-- Responsive Design
-- Search and Filter Stations
-- Booking History
-- Enhanced Validation and Error Handling
+- Enhanced validation and error handling
+- Additional authorization and security improvements
 
 ---
 
 ## 📚 Learning Outcomes
 
-This project helped me gain practical experience with:
+This project has helped me gain practical experience with:
 
 - Django project structure
 - Django Models and ORM
-- User Authentication
-- CRUD Operations
-- Template Rendering
-- MySQL Integration
-- File Uploads
-- Git & GitHub
-- Environment Variables using `.env`
+- Django Authentication
+- Django Groups and role-based access
+- CRUD operations
+- Template rendering
+- MySQL integration
+- ForeignKey and OneToOne relationships
+- File uploads
+- Form handling
+- Environment variables using `.env`
+- Git & GitHub version control
+- Building role-based web applications
 
 ---
 
