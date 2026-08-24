@@ -1,6 +1,6 @@
 # ⚡ EV Charging Station Finder App
 
-A web application built using **Python, Django, and MySQL** that helps electric vehicle (EV) users find charging stations and manage charging slots. The application includes role-based access for administrators, EV charging stations, customers, and workers.
+A web application built using **Python, Django, and MySQL** that helps electric vehicle (EV) users locate nearby charging stations and book charging slots online. The system includes separate dashboards for administrators, users, and workers, making station and booking management simple and efficient.
 
 ---
 
@@ -13,27 +13,19 @@ A web application built using **Python, Django, and MySQL** that helps electric 
 - View all charging stations
 - Edit station details
 - Delete charging stations
-- Manage EV charging station information
-
-### ⚡ EV Charging Station
-
-- EV station registration
-- Automatic user account creation for EV stations
-- EV station login
-- Role-based access using Django Groups
-- Dedicated EV station dashboard
 - Manage charging slots
-- Add charging slots
-- View charging slots
-- Edit charging slots
-- Delete charging slots
-- Charging slots linked to their respective EV stations
 
-### 👤 Customer
+### 👤 User
 
-- Customer registration
-- Customer login
-- Dedicated customer dashboard
+- User registration and login
+- User dashboard
+- Detect current location using browser geolocation
+- Find nearby EV charging stations based on current location
+- Calculate distance between the user and charging stations
+- Display charging stations sorted by nearest distance
+- View charging station details
+- Book available charging slots
+- View booking status
 
 ### 👷 Worker
 
@@ -48,6 +40,7 @@ A web application built using **Python, Django, and MySQL** that helps electric 
 
 - Python
 - Django
+- GeoPy
 
 ### Database
 
@@ -58,6 +51,7 @@ A web application built using **Python, Django, and MySQL** that helps electric 
 - HTML
 - CSS
 - JavaScript
+- Bootstrap
 
 ### Tools
 
@@ -103,20 +97,15 @@ pip install -r requirements.txt
 
 ### 4. Create a `.env` file
 
-Add your Django secret key and database credentials:
+Add your Django secret key:
 
 ```env
 DJANGO_SECRET_KEY=your_secret_key
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_HOST=localhost
-DB_PORT=3306
 ```
 
 ### 5. Configure the MySQL database
 
-Create a MySQL database and make sure the database settings in `settings.py` read the required credentials from the `.env` file.
+Update the database settings in `settings.py` with your local MySQL credentials.
 
 ### 6. Apply migrations
 
@@ -132,9 +121,25 @@ python manage.py runserver
 
 ---
 
+## 📍 Location-Based EV Station Finder
+
+The application allows users to find nearby EV charging stations using their current location.
+
+When the user selects **Use My Location**:
+
+1. The browser's Geolocation API obtains the user's latitude and longitude.
+2. The coordinates are sent to the Django backend.
+3. GeoPy calculates the distance between the user and each EV charging station.
+4. Charging stations are sorted from nearest to farthest.
+5. The results are displayed as responsive station cards.
+
+The application stores the latitude and longitude of each EV charging station and uses these coordinates for distance calculation.
+
+---
+
 ## 📸 Screenshots
 
-Screenshots will be added after the main application features and UI are completed.
+Screenshots will be added soon.
 
 ---
 
@@ -142,39 +147,36 @@ Screenshots will be added after the main application features and UI are complet
 
 **In Progress**
 
-### ✅ Completed
+### Completed
 
-- User authentication and registration
-- EV station authentication
-- Role-based access using Django Groups
-- Admin dashboard
-- EV station dashboard
-- Customer dashboard
-- Worker dashboard
-- EV charging station CRUD operations
-- EV station slot management
-  - Add slots
-  - View slots
-  - Edit slots
-  - Delete slots
+- User Authentication (Login & Registration)
+- Role-based Dashboards (Admin, User & Worker)
+- Admin Dashboard
+- EV Charging Station Management (CRUD)
+- Image Upload Support
+- User Dashboard
+- Worker Dashboard
+- MySQL Database Integration
+- Secure Configuration using Environment Variables (`.env`)
+- Git & GitHub Version Control
+- Charging Slot Management
+- Add, Edit and Delete Charging Slots
+- Current Location Detection
+- Location-Based EV Station Search
+- Distance Calculation using GeoPy
+- Nearest Station Sorting
+- Nearest EV Station Cards
 
-- Station-specific slot ownership
-- Image upload support
-- MySQL database integration
-- Environment variable configuration using `.env`
-- Git & GitHub version control
-- Responsive template structure
+### Planned Improvements
 
-### 🔄 Upcoming
-
-- Customer search for EV charging stations
-- Station details and available-slot display for customers
-- Charging slot booking system
-- Booking history
-- Google Maps-based station search
+- Search EV stations by place name
+- Booking System Enhancement
+- Booking History
+- View detailed station information
 - Improved UI/UX
-- Enhanced validation and error handling
-- Additional authorization and security improvements
+- Responsive Design
+- Search and Filter Stations
+- Enhanced Validation and Error Handling
 
 ---
 
@@ -184,17 +186,17 @@ This project has helped me gain practical experience with:
 
 - Django project structure
 - Django Models and ORM
-- Django Authentication
-- Django Groups and role-based access
-- CRUD operations
-- Template rendering
-- MySQL integration
-- ForeignKey and OneToOne relationships
-- File uploads
-- Form handling
-- Environment variables using `.env`
-- Git & GitHub version control
-- Building role-based web applications
+- User Authentication
+- CRUD Operations
+- Template Rendering
+- MySQL Integration
+- File Uploads
+- Browser Geolocation API
+- Latitude and Longitude
+- GeoPy distance calculation
+- JSON communication between JavaScript and Django
+- Git & GitHub
+- Environment Variables using `.env`
 
 ---
 
