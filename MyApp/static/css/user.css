@@ -1,0 +1,141 @@
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:200px;
+    height:100vh;
+    background:#043116;
+    padding-top:20px;
+}
+
+.sidebar h2{
+    color:white;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:15px 20px;
+    font-size:17px;
+}
+
+.navbar{
+    position: fixed;
+    left: 0px;
+    top: 0;
+    right: 0;
+    height:110px;
+    background: rgb(65, 229, 131);
+    font-size:18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    border-bottom:1px solid #e9e9e9;
+    z-index: 1000;
+}
+
+.navbar select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    font-size: 15px;
+    width: 200px;
+}
+
+.content{
+    margin-top: 150px;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1E4FBE;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1FAA59;
+  box-shadow: 0 0 0 4px rgba(31, 170, 89, 0.15);
+}
+
+.heading{
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 24px;
+
+}
+
+.result-head{
+    margin-top: 30px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    display: flex;
+}
+
+.station-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.station-card {
+    background: #ffffff;
+    border: 1px solid #e2e8e4;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: 0.25s ease;
+}
+
+.station-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.station-card h3 {
+    margin: 0 0 15px;
+    color: #043116;
+    font-size: 20px;
+}
+
+.station-card p {
+    margin: 9px 0;
+    color: #555;
+    font-size: 15px;
+}
+
+.station-card p:first-of-type {
+    color: #087f3e;
+    font-weight: 600;
+}
+
+.station-card button {
+    margin-top: 16px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 7px;
+    background: #043116;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.station-card button:hover {
+    background: #075c2b;
+}

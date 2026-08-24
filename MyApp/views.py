@@ -1,12 +1,14 @@
 from datetime import datetime
 
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User,Group
 from MyApp.models import EV_station, Slot, users
 from django.contrib.auth import authenticate,login,logout
 from django.utils.crypto import get_random_string
+from geopy.distance import geodesic
 # Create your views here.
 def add_EV(request):
     if request.method == "POST":
@@ -177,7 +179,45 @@ def sign_upPost(request):
     return redirect('/log_in/')
 
 def user_home(request):
-    return render(request,'user_home.html')
+    customer=users.objects.get(user=request.user)
+    return render(request,'user_home.html',{'data':customer})
+
+def save_location(request):
+    
+    if request.method == 'POST':
+        latitude = float(request.POST.get('latitude'))
+        longitude = float(request.POST.get('longitude'))
+
+        print("Customer latitude:", latitude)
+        print("Customer longitude:", longitude)
+
+        customer_location = (latitude, longitude)
+
+        stations = EV_station.objects.all()
+
+        station_distances = []
+
+        for station in stations:
+            station_location = (station.latitude, station.longitude)
+
+            distance = geodesic(
+                customer_location,
+                station_location
+            ).km
+
+            station_distances.append({
+                'name': station.name,
+                'distance': round(distance, 2),
+                'phone': station.phone,
+                'email': station.email
+            })
+
+        station_distances.sort(key=lambda x: x['distance'])
+
+        return JsonResponse({
+            'stations': station_distances
+        })
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def worker_home(request):
     return render(request,'worker_home.html')

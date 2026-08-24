@@ -1,21 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Home</title>
-</head>
-<body>
 
-    
-        <nav style="background-color: rgb(27, 248, 156); color: aliceblue; height: 100px;"><h2>Home</h2>
-    
-    <div style="display: flex; justify-content: space-between;">
-        <a href="">View EV stations </a>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div>
+        <h1>VoltWay</h1>
+        <p>EV Charging Station Finder</p>
+      </div>
 
-    </div>
+      <div>
+        <select>
+          <option>Hi, {{data.name}}</option>
+          <option>View Profile</option>
+          <option>My Bookings</option>
+          <option>Change Password</option>
+          <option>Log out</option>
+        </select>
+      </div>
     </nav>
-    
-</body>
+
+    <div class="content">
+      <div class="eyebrow">Search by location or use your current position</div>
+
+      <div class="heading">
+        <h1>Find a place to charge</h1>
+
+        Search by city or station name, or use your current location to see
+        what's closest.
+      </div>
+
+      <div class="input-group mt-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search stations"
+          aria-label="Recipient's username with two button addons"
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="use-location"
+        >
+          Use my location
+        </button>
+        <button class="btn btn-outline-secondary btn-primary" type="button">
+          Search
+        </button>
+      </div>
+
+      <div class="result-head">Stations near...</div>
+
+      <div id="station-results" class="station-grid">
+        
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("use-location")
+        .addEventListener("click", function () {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              function (position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                console.log("Latitude:", position.coords.latitude);
+                console.log("Longitude:", position.coords.longitude);
+
+                fetch("{% url 'save_location' %}", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                  },
+                  body: `latitude=${latitude}&longitude=${longitude}`,
+                })
+                  .then((response) => response.json())
+
+                  .then((data) => {
+                    const results = document.getElementById("station-results");
+
+                    results.innerHTML = "";
+
+                    data.stations.forEach((station) => {
+                      const card = document.createElement("div");
+
+                      card.className = "station-card";
+
+                      card.innerHTML = `
+                  <h3>${station.name}</h3>
+
+                  <p> ${station.distance} km away</p>
+
+                  <p> ${station.phone}</p>
+
+                  <p> ${station.email}</p>
+
+                  <button type="button">
+                  View Station
+                  </button>
+              `;
+
+                      results.appendChild(card);
+                    });
+                  });
+              },
+              function (error) {
+                console.log("Location error:", error.message);
+              },
+            );
+          } else {
+            console.log("Geolocation is not supported by this browser.");
+          }
+        });
+    </script>
+  </body>
 </html>

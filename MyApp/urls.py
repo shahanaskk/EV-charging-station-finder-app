@@ -30,6 +30,7 @@ urlpatterns = [
     path('sign_up/',views.sign_up),
     path('sign_upPost/',views.sign_upPost),
     path('user_home/',views.user_home),
+    path('save_location', views.save_location, name='save_location'),
     path('worker_home/',views.worker_home),
     path('manage_slots/',views.manage_slots),
     path('add_slots/',views.add_slots),
