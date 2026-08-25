@@ -163,13 +163,13 @@ Screenshots will be added soon.
 - Add, Edit and Delete Charging Slots
 - Current Location Detection
 - Location-Based EV Station Search
+- Place-name based EV Station Search
 - Distance Calculation using GeoPy
 - Nearest Station Sorting
 - Nearest EV Station Cards
 
 ### Planned Improvements
 
-- Search EV stations by place name
 - Booking System Enhancement
 - Booking History
 - View detailed station information
