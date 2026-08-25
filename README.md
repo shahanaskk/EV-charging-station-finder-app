@@ -139,7 +139,11 @@ The application stores the latitude and longitude of each EV charging station an
 
 ## 📸 Screenshots
 
-Screenshots will be added soon.
+### Customer Dashboard
+![Customer Dashboard](screenshots/customer-dashboard.png)
+
+### Admin Panel
+![EV Station Manage Slots](screenshots/manage-slots.png)
 
 ---
 
