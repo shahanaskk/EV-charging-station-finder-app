@@ -9,6 +9,7 @@ from MyApp.models import EV_station, Slot, users
 from django.contrib.auth import authenticate,login,logout
 from django.utils.crypto import get_random_string
 from geopy.distance import geodesic
+from geopy.geocoders import Nominatim
 # Create your views here.
 def add_EV(request):
     if request.method == "POST":
@@ -182,42 +183,84 @@ def user_home(request):
     customer=users.objects.get(user=request.user)
     return render(request,'user_home.html',{'data':customer})
 
+def find_nearest_stations(latitude, longitude):
+
+    customer_location = (latitude, longitude)
+
+    stations = EV_station.objects.all()
+
+    station_distances = []
+
+    for station in stations:
+
+        station_location = (
+            station.latitude,
+            station.longitude
+        )
+
+        distance = geodesic(
+            customer_location,
+            station_location
+        ).km
+
+        station_distances.append({
+            'name': station.name,
+            'distance': round(distance, 2),
+            'phone': station.phone,
+            'email': station.email
+        })
+
+    station_distances.sort(
+        key=lambda x: x['distance']
+    )
+
+    return station_distances
+
 def save_location(request):
     
     if request.method == 'POST':
         latitude = float(request.POST.get('latitude'))
         longitude = float(request.POST.get('longitude'))
 
-        print("Customer latitude:", latitude)
-        print("Customer longitude:", longitude)
-
-        customer_location = (latitude, longitude)
-
-        stations = EV_station.objects.all()
-
-        station_distances = []
-
-        for station in stations:
-            station_location = (station.latitude, station.longitude)
-
-            distance = geodesic(
-                customer_location,
-                station_location
-            ).km
-
-            station_distances.append({
-                'name': station.name,
-                'distance': round(distance, 2),
-                'phone': station.phone,
-                'email': station.email
-            })
-
-        station_distances.sort(key=lambda x: x['distance'])
+        stations = find_nearest_stations(
+            latitude,
+            longitude
+        )
 
         return JsonResponse({
-            'stations': station_distances
+            'stations': stations
         })
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def search_location(request):
+    if request.method == 'POST':
+        place = request.POST.get('location')
+
+        geolocator = Nominatim(
+            user_agent="ev_charging_station_finder"
+        )
+
+        location = geolocator.geocode(place)
+
+        if location:
+            latitude = location.latitude
+            longitude = location.longitude
+
+            stations = find_nearest_stations(
+                latitude,
+                longitude
+            )
+
+            return JsonResponse({'stations': stations})
+        
+        return JsonResponse({
+            'error': 'Location not found'
+        }, status=404)
+    
+    return JsonResponse(
+        {'error': 'Invalid request'},
+        status=400
+    )
 
 def worker_home(request):
     return render(request,'worker_home.html')

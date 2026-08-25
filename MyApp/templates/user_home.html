@@ -51,9 +51,9 @@
       <div class="input-group mt-3">
         <input
           type="text"
+          id="location-search"
           class="form-control"
           placeholder="Search stations"
-          aria-label="Recipient's username with two button addons"
         />
         <button
           class="btn btn-outline-secondary"
@@ -62,19 +62,45 @@
         >
           Use my location
         </button>
-        <button class="btn btn-outline-secondary btn-primary" type="button">
+        <button
+          class="btn btn-outline-secondary btn-primary"
+          type="button"
+          id="search-location"
+        >
           Search
         </button>
       </div>
 
       <div class="result-head">Stations near...</div>
 
-      <div id="station-results" class="station-grid">
-        
-      </div>
+      <div id="station-results" class="station-grid"></div>
     </div>
 
     <script>
+      function displayStations(stations) {
+        const results = document.getElementById("station-results");
+
+        results.innerHTML = "";
+
+        stations.forEach(function (station) {
+          const card = document.createElement("div");
+
+          card.className = "station-card";
+
+          card.innerHTML = `
+            <h3>${station.name}</h3>
+            <p>📍 ${station.distance} km away</p>
+            <p>📞 ${station.phone}</p>
+            <p>✉ ${station.email}</p>
+            <button type="button">
+                View Station
+            </button>
+        `;
+
+          results.appendChild(card);
+        });
+      }
+
       document
         .getElementById("use-location")
         .addEventListener("click", function () {
@@ -98,31 +124,11 @@
                   .then((response) => response.json())
 
                   .then((data) => {
-                    const results = document.getElementById("station-results");
-
-                    results.innerHTML = "";
-
-                    data.stations.forEach((station) => {
-                      const card = document.createElement("div");
-
-                      card.className = "station-card";
-
-                      card.innerHTML = `
-                  <h3>${station.name}</h3>
-
-                  <p> ${station.distance} km away</p>
-
-                  <p> ${station.phone}</p>
-
-                  <p> ${station.email}</p>
-
-                  <button type="button">
-                  View Station
-                  </button>
-              `;
-
-                      results.appendChild(card);
-                    });
+                      if (data.stations) {
+                           displayStations(data.stations);
+                            } else {
+                                     console.log(data.error);
+                            }
                   });
               },
               function (error) {
@@ -132,6 +138,38 @@
           } else {
             console.log("Geolocation is not supported by this browser.");
           }
+        });
+
+      document
+        .getElementById("search-location")
+        .addEventListener("click", function () {
+          const place = document.getElementById("location-search").value;
+
+          if (place.trim() === "") {
+            alert("Please enter a location.");
+            return;
+          }
+
+          fetch("{% url 'search_location' %}", {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
+
+            body: `location=${encodeURIComponent(place)}`,
+          })
+            .then((response) => response.json())
+
+            .then((data) => {
+              if (data.stations) {
+                           displayStations(data.stations);
+                            } else {
+                                     console.log(data.error);
+                            }
+            });
         });
     </script>
   </body>
